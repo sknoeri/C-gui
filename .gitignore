@@ -45,6 +45,7 @@ _deps
 CMakeUserPresets.json
 
 out/build
+externals/imgui
 
 # Ignore all files in the build directory
 [Bb][Uu][Ii][Ll][Dd]/
