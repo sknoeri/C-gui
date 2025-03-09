@@ -5,7 +5,6 @@ project(CppGuiProject)
 
 # ImGui-Quellcode direkt ins Projekt einfügen
 set(IMGUI_DIR externals/imgui)
-set(IMPLOT_DIR externals/implot)
 set(IMGUI_SOURCES
     ${IMGUI_DIR}/imgui.cpp
     ${IMGUI_DIR}/imgui_demo.cpp
@@ -15,18 +14,26 @@ set(IMGUI_SOURCES
     ${IMGUI_DIR}/backends/imgui_impl_glfw.cpp
     ${IMGUI_DIR}/backends/imgui_impl_opengl3.cpp
 )
+# ImPlot -Quellcode direkt ins Projekt einfügen
+set(IMPLOT_DIR externals/implot)
+set(IMPLOT_SOURCES
+    ${IMPLOT_DIR}/implot.cpp
+    ${IMPLOT_DIR}/implot_items.cpp
+)
 
 # GLFW hinzufügen
 find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
 
 # Add the executable
-add_executable(${PROJECT_NAME} main.cpp ${IMGUI_SOURCES})
+add_executable(${PROJECT_NAME} main.cpp ${IMGUI_SOURCES} ${IMPLOT_SOURCES})
 
-# Add subdirectory for imgui
+# Add subdirectory for imgui and implot
 target_include_directories(${PROJECT_NAME} 
     PUBLIC ${IMGUI_DIR}
     PUBLIC ${IMGUI_DIR}/backends
+    PUBLIC ${IMPLOT_DIR}
+    PUBLIC ${IMPLOT_DIR}/backends
 )
 
 # Bibliotheken

@@ -1,8 +1,11 @@
 #include <iostream>
+#include <vector>
+#include <string>
 #include <GLFW/glfw3.h>
-#include <imgui.h>
-#include <imgui_impl_glfw.h>
-#include <imgui_impl_opengl3.h>
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#include "implot.h"
 
 void error_callback(int error, const char* description) {
     std::cerr << "GLFW Error (" << error << "): " << description << std::endl;
@@ -28,12 +31,20 @@ int main() {
     // ImGui initialisieren
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
+    ImPlot::CreateContext();  // ImPlot-Context initialisieren
+
     ImGuiIO& io = ImGui::GetIO();
     (void)io;
 
     ImGui::StyleColorsDark();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 130");
+
+    // Beispielhafte X-Y-Daten
+    std::vector<float> x_data = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+    std::vector<float> y_data = {0.2f, 0.3f, 0.5f, 0.4f, 0.6f, 0.9f, 1.2f, 1.0f, 0.8f, 0.7f};
+
+
     std::string feedback="";
     char textBuffer[256] = "";
     // Hauptloop
@@ -56,8 +67,16 @@ int main() {
 
         // Textbox anzeigen
         ImGui::InputTextMultiline("##FeedbackBox", textBuffer, sizeof(textBuffer), ImVec2(400, 100)); // ImGuiInputTextFlags_ReadOnly
-        ImGui::End();
 
+        // Plot mit implot machen
+        if (ImPlot::BeginPlot("Mein 2D-Plot")) {
+            ImPlot::SetupAxes("X-Werte", "Y-Werte",ImPlotAxisFlags_AutoFit); // Achsentitel setzen
+            ImPlot::SetupAxisLimits(ImAxis_X1, 0, 10, ImGuiCond_Once); // Initiale Zoom-Grenzen für X
+            ImPlot::SetupAxisLimits(ImAxis_Y1, 0, 1.5, ImGuiCond_Once); // Initiale Zoom-Grenzen für Y
+            ImPlot::PlotLine("Messwerte", x_data.data(), y_data.data(), x_data.size());
+            ImPlot::EndPlot();
+        }
+        ImGui::End();
         // Rendering
         ImGui::Render();
         glClear(GL_COLOR_BUFFER_BIT);
@@ -66,6 +85,7 @@ int main() {
     }
 
     // Aufräumen
+    ImPlot::DestroyContext();
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
