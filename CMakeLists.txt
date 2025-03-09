@@ -5,6 +5,7 @@ project(CppGuiProject)
 
 # ImGui-Quellcode direkt ins Projekt einfügen
 set(IMGUI_DIR externals/imgui)
+set(IMPLOT_DIR externals/implot)
 set(IMGUI_SOURCES
     ${IMGUI_DIR}/imgui.cpp
     ${IMGUI_DIR}/imgui_demo.cpp
