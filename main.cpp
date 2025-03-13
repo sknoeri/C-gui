@@ -28,6 +28,7 @@ int main() {
     }
     glfwMakeContextCurrent(window);
 
+
     // ImGui initialisieren
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
@@ -44,7 +45,6 @@ int main() {
     std::vector<float> x_data = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
     std::vector<float> y_data = {0.2f, 0.3f, 0.5f, 0.4f, 0.6f, 0.9f, 1.2f, 1.0f, 0.8f, 0.7f};
 
-
     std::string feedback="";
     char textBuffer[256] = "";
     // Hauptloop
@@ -56,6 +56,11 @@ int main() {
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        // here's the ImGui window resizing code
+        int width, height;
+        glfwGetWindowSize(window, &width, &height);
+        ImGui::SetNextWindowSize(ImVec2(width, height)); // ensures ImGui fits the GLFW window
+        ImGui::SetNextWindowPos(ImVec2(0, 0)); // ensures ImGui fits the GLFW window
         // GUI zeichnen
         ImGui::Begin("Hello World App");
         if (ImGui::Button("Say Hello", ImVec2(200, 50))) {
@@ -69,10 +74,10 @@ int main() {
         ImGui::InputTextMultiline("##FeedbackBox", textBuffer, sizeof(textBuffer), ImVec2(400, 100)); // ImGuiInputTextFlags_ReadOnly
 
         // Plot mit implot machen
-        if (ImPlot::BeginPlot("Mein 2D-Plot")) {
-            ImPlot::SetupAxes("X-Werte", "Y-Werte",ImPlotAxisFlags_AutoFit); // Achsentitel setzen
-            ImPlot::SetupAxisLimits(ImAxis_X1, 0, 10, ImGuiCond_Once); // Initiale Zoom-Grenzen für X
-            ImPlot::SetupAxisLimits(ImAxis_Y1, 0, 1.5, ImGuiCond_Once); // Initiale Zoom-Grenzen für Y
+        if (ImPlot::BeginPlot("Mein 2D-Plot", ImVec2(-1, 0), ImPlotFlags_Crosshairs)) {
+            ImPlot::SetupAxes("X-Werte", "Y-Werte"); // Achsentitel setzen
+            // ImPlot::SetupAxisLimits(ImAxis_X1, x_min, x_max, ImGuiCond_Always); // Zoom-Grenzen für X
+            // ImPlot::SetupAxisLimits(ImAxis_Y1, y_min, y_max, ImGuiCond_Always); // Zoom-Grenzen für Y
             ImPlot::PlotLine("Messwerte", x_data.data(), y_data.data(), x_data.size());
             ImPlot::EndPlot();
         }
