@@ -20,24 +20,33 @@ set(IMPLOT_SOURCES
     ${IMPLOT_DIR}/implot.cpp
     ${IMPLOT_DIR}/implot_items.cpp
 )
+# Libusb includ dircetory
+set(LIBUSB_INCLUDE_DIRS /usr/include/libusb-1.0)
 
 # GLFW hinzufügen
 find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
+# libusb hinzufügen
+find_package(PkgConfig REQUIRED)
+#pkg_check_modules(LIBUSB REQUIRED libusb-1.0)
 
 # Add the executable
 add_executable(${PROJECT_NAME} main.cpp ${IMGUI_SOURCES} ${IMPLOT_SOURCES})
 
 # Add subdirectory for imgui and implot
 target_include_directories(${PROJECT_NAME} 
+    # add imgui directory
     PUBLIC ${IMGUI_DIR}
     PUBLIC ${IMGUI_DIR}/backends
+    # add implot directory
     PUBLIC ${IMPLOT_DIR}
     PUBLIC ${IMPLOT_DIR}/backends
+    # add libusb directory
+    PUBLIC ${LIBUSB_INCLUDE_DIRS}
 )
 
 # Bibliotheken
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw OpenGL::GL)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw OpenGL::GL libusb-1.0.a)
 
 # add_library(imgui STATIC
 #     externals/imgui/imgui.cpp
