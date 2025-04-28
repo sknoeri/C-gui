@@ -23,12 +23,14 @@ set(IMPLOT_SOURCES
 # Libusb includ dircetory
 set(LIBUSB_INCLUDE_DIRS /usr/include/libusb-1.0)
 
-# GLFW hinzufügen
-# find_package(glfw3 REQUIRED)
+# OpenGL hinzufügen
 find_package(OpenGL REQUIRED)
 # libusb hinzufügen
-find_package(PkgConfig REQUIRED)
 #pkg_check_modules(LIBUSB REQUIRED libusb-1.0)
+
+# Add subdirectory for glfw
+add_subdirectory(externals/glfw glfw)
+
 
 # Add the executable
 add_executable(${PROJECT_NAME} main.cpp ${IMGUI_SOURCES} ${IMPLOT_SOURCES})
@@ -46,7 +48,7 @@ target_include_directories(${PROJECT_NAME}
 )
 
 # Bibliotheken
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw OpenGL::GL libusb-1.0.a)
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw OpenGL::GL)
 
 # add_library(imgui STATIC
 #     externals/imgui/imgui.cpp
