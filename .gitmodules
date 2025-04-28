@@ -4,3 +4,7 @@
 [submodule "externals/implot"]
 	path = externals/implot
 	url = https://github.com/epezent/implot.git
+[submodule "externals/glfw"]
+	path = externals/glfw
+	url = https://github.com/glfw/glfw.git
+	branch = 3.3-stable

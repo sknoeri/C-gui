@@ -24,7 +24,7 @@ set(IMPLOT_SOURCES
 set(LIBUSB_INCLUDE_DIRS /usr/include/libusb-1.0)
 
 # GLFW hinzufügen
-find_package(glfw3 REQUIRED)
+# find_package(glfw3 REQUIRED)
 find_package(OpenGL REQUIRED)
 # libusb hinzufügen
 find_package(PkgConfig REQUIRED)
