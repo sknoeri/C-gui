@@ -20,7 +20,17 @@ set(IMPLOT_SOURCES
     ${IMPLOT_DIR}/implot.cpp
     ${IMPLOT_DIR}/implot_items.cpp
 )
-    
+# # Set the include directory for libusb
+# set(LIBUSB_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/libraries/libusb/include/libusb-1.0)
+
+# # Set the library directory for libusb
+# set(LIBUSB_LIB_DIR ${CMAKE_SOURCE_DIR}/libraries/libusb/lib)   
+
+
+# libusb suchen
+find_package(PkgConfig REQUIRED)
+pkg_check_modules(LIBUSB REQUIRED libusb-1.0)
+
 # OpenGL hinzufügen
 find_package(OpenGL REQUIRED)
 
@@ -42,29 +52,10 @@ target_include_directories(${PROJECT_NAME}
     # add implot directory
     PUBLIC ${IMPLOT_DIR}
     PUBLIC ${IMPLOT_DIR}/backends
+    PUBLIC ${LIBUSB_INCLUDE_DIRS}
 )
 
 # Bibliotheken
-target_link_libraries(${PROJECT_NAME} PRIVATE glfw OpenGL::GL )
-
-# add_library(imgui STATIC
-#     externals/imgui/imgui.cpp
-#     externals/imgui/imgui_draw.cpp
-#     externals/imgui/imgui_demo.cpp
-#     externals/imgui/imgui_tables.cpp
-# )
-
-# target_include_directories(imgui PUBLIC externals/imgui externals/imgui/backends)
-# target_link_libraries(imgui PRIVATE glfw GL)
-
-# # Add the include directory for GLFW
-
-# # Link directories for GLFW
-# target_link_directories(${PROJECT_NAME}
-#     PUBLIC out/build/externals/glfw/deps
-# )
-
-# # Link the GLFW library
-# target_link_libraries(${PROJECT_NAME} 
-#     PUBLIC glfw
-# )
+target_link_libraries(${PROJECT_NAME} PRIVATE glfw OpenGL::GL 
+    ${LIBUSB_LIBRARIES}
+)
