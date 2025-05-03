@@ -8,7 +8,3 @@
 	path = externals/glfw
 	url = https://github.com/glfw/glfw.git
 	branch = 3.3-stable
-[submodule "externals/libusb"]
-	path = externals/libusb
-	url = https://github.com/libusb/libusb.git
-	branch = master

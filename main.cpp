@@ -2,7 +2,6 @@
 #include <vector>
 #include <string>
 #include <GLFW/glfw3.h>
-#include <libusb-1.0/libusb.h>
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -12,51 +11,8 @@ void error_callback(int error, const char* description) {
     std::cerr << "GLFW Error (" << error << "): " << description << std::endl;
 }
 
-void list_usb_devices()
-{
-    // variables for lib usb
-    libusb_context *ctx = nullptr;
-    libusb_device **devs = nullptr;
-    ssize_t cnt;
-    // Initialize libusb
-    int r = libusb_init(&ctx);
-    if (r < 0) {
-        std::cerr << "Failed to initialize libusb: " << libusb_error_name(r) << std::endl;
-    }
-    // Get the list of USB devices
-    cnt = libusb_get_device_list(ctx, &devs);
-    if (cnt < 0) {
-        std::cerr << "Failed to get USB device list: " << libusb_error_name(cnt) << std::endl;
-        libusb_exit(ctx);
-    }
-
-    std::cout << "Number of USB devices found: " << cnt << std::endl;
-
-    // Iterate over the list of devices and print their details
-    for (ssize_t i = 0; i < cnt; ++i) {
-        libusb_device *dev = devs[i];
-        libusb_device_descriptor desc;
-        r = libusb_get_device_descriptor(dev, &desc);
-        if (r < 0) {
-            std::cerr << "Failed to get device descriptor: " << libusb_error_name(r) << std::endl;
-            continue;
-        }
-
-        std::cout << "Device " << i << ": "
-                  << "Vendor ID: " << std::hex << desc.idVendor
-                  << ", Product ID: " << std::hex << desc.idProduct
-                  << std::dec << std::endl;
-    }
-
-    // Free the list of devices
-    libusb_free_device_list(devs, 1);
-
-    // Deinitialize libusb
-    libusb_exit(ctx);
-}
 
 int main() {
-    list_usb_devices(); // List USB devices
     // GLFW initialisieren
     glfwSetErrorCallback(error_callback);
     if (!glfwInit()) {

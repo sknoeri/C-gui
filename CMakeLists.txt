@@ -21,15 +21,15 @@ set(IMPLOT_SOURCES
     ${IMPLOT_DIR}/implot_items.cpp
 )
 # # Set the include directory for libusb
-# set(LIBUSB_INCLUDE_DIRS ${CMAKE_SOURCE_DIR}/libraries/libusb/include/libusb-1.0)
+set(LIBUSB_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/libraries/libusb/include/libusb-1.0)
 
 # # Set the library directory for libusb
-# set(LIBUSB_LIB_DIR ${CMAKE_SOURCE_DIR}/libraries/libusb/lib)   
+set(LIBUSB_LIB_DIR ${CMAKE_SOURCE_DIR}/libraries/libusb/lib)   
 
 
 # libusb suchen
 find_package(PkgConfig REQUIRED)
-pkg_check_modules(LIBUSB REQUIRED libusb-1.0)
+# pkg_check_modules(LIBUSB REQUIRED libusb-1.0)
 
 # OpenGL hinzufügen
 find_package(OpenGL REQUIRED)
@@ -52,10 +52,12 @@ target_include_directories(${PROJECT_NAME}
     # add implot directory
     PUBLIC ${IMPLOT_DIR}
     PUBLIC ${IMPLOT_DIR}/backends
-    PUBLIC ${LIBUSB_INCLUDE_DIRS}
+    PUBLIC ${LIBUSB_INCLUDE_DIR}
 )
 
 # Bibliotheken
 target_link_libraries(${PROJECT_NAME} PRIVATE glfw OpenGL::GL 
-    ${LIBUSB_LIBRARIES}
+    ${LIBUSB_LIB_DIR}/libusb-1.0.a
+    udev
+    # ${LIBUSB_LIBRARIES}
 )
